@@ -16,7 +16,11 @@ let transformer = async (svg, componentName, format) => {
   //   plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
   // })
 
-  const component = await transform(svg, { ref: true, titleProp: true }, { componentName })
+  const component = await transform(
+    svg,
+    { plugins: ['@svgr/plugin-jsx'], ref: true, titleProp: true },
+    { componentName }
+  )
 
   let { code } = await babel.transformAsync(component, {
     plugins: [[TransformReactJSX, { useBuiltIns: true }]],

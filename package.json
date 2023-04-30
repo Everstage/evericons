@@ -59,5 +59,8 @@
   },
   "peerDependencies": {
     "react": ">= 16"
+  },
+  "dependencies": {
+    "@svgr/plugin-jsx": "^7.0.0"
   }
 }
