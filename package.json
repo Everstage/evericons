@@ -2,6 +2,7 @@
   "name": "evericons",
   "version": "0.0.1",
   "license": "MIT",
+  "type": "module",
   "files": [
     "static/",
     "README.md"
@@ -11,7 +12,7 @@
     "prebuild": "rimraf ./static ./optimized/static",
     "build": "npm run build-static && npm run build-react",
     "build-react": "node ./scripts/build.js react",
-    "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static",
+    "build-static": "rimraf ./optimized/static && svgo -f ./src/static -o ./optimized/static && mkdir -p ./static",
     "prepare": "npm run build"
   },
   "devDependencies": {
