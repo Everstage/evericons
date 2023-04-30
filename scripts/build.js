@@ -152,11 +152,11 @@ async function main(package) {
     ensureWriteJson(`./${package}/static/package.json`, cjsPackageJson),
   ])
 
-  let packageJson = JSON.parse(await fs.readFile(`./${package}/package.json`, 'utf8'))
+  let packageJson = JSON.parse(await fs.readFile(`./package.json`, 'utf8'))
 
   packageJson.exports = await buildExports(['static'])
 
-  await ensureWriteJson(`./${package}/package.json`, packageJson)
+  await ensureWriteJson(`./package.json`, packageJson)
 
   return console.log(`Finished building ${package} package.`)
 }

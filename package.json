@@ -27,37 +27,40 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "import": "./react/index.esm.js",
-      "require": "./react/index.js"
+      "import": "./index.esm.js",
+      "require": "./index.js"
     },
-    "./react/static": {
-      "types": "./react/static/index.d.ts",
-      "import": "./react/static/esm/index.js",
-      "require": "./react/static/index.js"
+    "./package.json": {
+      "default": "./package.json"
     },
-    "./react/static/index": {
-      "default": "./react/static/index.js"
+    "./static": {
+      "types": "./static/index.d.ts",
+      "import": "./static/esm/index.js",
+      "require": "./static/index.js"
     },
-    "./react/static/index.js": {
-      "default": "./react/static/index.js"
+    "./static/index": {
+      "default": "./static/index.js"
     },
-    "./react/static/*": {
-      "types": "./react/static/*.d.ts",
-      "import": "./react/static/esm/*.js",
-      "require": "./react/static/*.js"
+    "./static/index.js": {
+      "default": "./static/index.js"
     },
-    "./react/static/*.js": {
-      "types": "./react/static/*.d.ts",
-      "import": "./react/static/esm/*.js",
-      "require": "./react/static/*.js"
+    "./static/*": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js",
+      "require": "./static/*.js"
     },
-    "./react/static/esm/*": {
-      "types": "./react/static/*.d.ts",
-      "import": "./react/static/esm/*.js"
+    "./static/*.js": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js",
+      "require": "./static/*.js"
     },
-    "./react/static/esm/*.js": {
-      "types": "./react/static/*.d.ts",
-      "import": "./react/static/esm/*.js"
+    "./static/esm/*": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js"
+    },
+    "./static/esm/*.js": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js"
     }
   },
   "peerDependencies": {
