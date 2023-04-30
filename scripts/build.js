@@ -3,15 +3,30 @@ import camelcase from 'camelcase'
 import { rimraf } from 'rimraf'
 import { transform } from '@svgr/core'
 import { dirname } from 'path'
+import * as babel from '@babel/core'
+import TransformReactJSX from '@babel/plugin-transform-react-jsx'
 
 let transformer = async (svg, componentName, format) => {
-  const jsCode = await transform(svg, { ref: true, titleProp: true }, { componentName })
+  // let component = await svgr(
+  //   svg,
+  //   { ref: true, titleProp: true },
+  //   { componentName }
+  // )
+  // let { code } = await babel.transformAsync(component, {
+  //   plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
+  // })
+
+  const component = await transform(svg, { ref: true, titleProp: true }, { componentName })
+
+  let { code } = await babel.transformAsync(component, {
+    plugins: [[TransformReactJSX, { useBuiltIns: true }]],
+  })
 
   if (format === 'esm') {
-    return jsCode
+    return code
   }
 
-  return jsCode
+  return code
     .replace('import * as React from "react"', 'const React = require("react")')
     .replace('export default', 'module.exports =')
 }
