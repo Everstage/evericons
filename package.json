@@ -14,7 +14,7 @@
     "build": "npm run build-static && npm run build-react",
     "build-react": "node ./scripts/build.js react",
     "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static && cp -R ./optimized/static/ ./static",
-    "postinstall": "npm update https://github.com/Everstage/evericons.git"
+    "postinstall": "npm update evericons"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
