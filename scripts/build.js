@@ -6,28 +6,26 @@ const svgr = require('@svgr/core').default
 const babel = require('@babel/core')
 const { dirname } = require('path')
 
-let transform = {
-  react: async (svg, componentName, format) => {
-    let component = await svgr(svg, { ref: true, titleProp: true }, { componentName })
-    let { code } = await babel.transformAsync(component, {
-      plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
-    })
+let transform = async (svg, componentName, format) => {
+  let component = await svgr(svg, { ref: true, titleProp: true }, { componentName })
+  let { code } = await babel.transformAsync(component, {
+    plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
+  })
 
-    if (format === 'esm') {
-      return code
-    }
-
+  if (format === 'esm') {
     return code
-      .replace('import * as React from "react"', 'const React = require("react")')
-      .replace('export default', 'module.exports =')
-  },
+  }
+
+  return code
+    .replace('import * as React from "react"', 'const React = require("react")')
+    .replace('export default', 'module.exports =')
 }
 
-async function getIcons(style) {
-  let files = await fs.readdir(`./optimized/${style}`)
+async function getIcons(package) {
+  let files = await fs.readdir(`./optimized/${package}`)
   return Promise.all(
     files.map(async (file) => ({
-      svg: await fs.readFile(`./optimized/${style}/${file}`, 'utf8'),
+      svg: await fs.readFile(`./optimized/${package}/${file}`, 'utf8'),
       componentName: `${camelcase(file.replace(/\.svg$/, ''), {
         pascalCase: true,
       })}Icon`,
@@ -56,21 +54,18 @@ async function ensureWriteJson(file, json) {
   await ensureWrite(file, JSON.stringify(json, null, 2) + '\n')
 }
 
-async function buildIcons(package, style, format) {
-  let outDir = `./${package}/${style}`
+async function buildIcons(package, format) {
+  let outDir = `./${package}`
   if (format === 'esm') {
     outDir += '/esm'
   }
 
-  let icons = await getIcons(style)
+  let icons = await getIcons(package)
 
   await Promise.all(
     icons.flatMap(async ({ componentName, svg }) => {
-      let content = await transform[package](svg, componentName, format)
-      let types =
-        package === 'react'
-          ? `import * as React from 'react';\ndeclare const ${componentName}: React.ForwardRefExoticComponent<React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & { title?: string, titleId?: string } & React.RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`
-          : `import type { FunctionalComponent, HTMLAttributes, VNodeProps } from 'vue';\ndeclare const ${componentName}: FunctionalComponent<HTMLAttributes & VNodeProps>;\nexport default ${componentName};\n`
+      let content = await transform(svg, componentName, format)
+      let types = `import * as React from 'react';\ndeclare const ${componentName}: React.ForwardRefExoticComponent<React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & { title?: string, titleId?: string } & React.RefAttributes<SVGSVGElement>>;\nexport default ${componentName};\n`
 
       return [
         ensureWrite(`${outDir}/${componentName}.js`, content),
@@ -85,9 +80,9 @@ async function buildIcons(package, style, format) {
 }
 
 /**
- * @param {string[]} styles
+ * @param {string[]} packages
  */
-async function buildExports(styles) {
+async function buildExports(packages) {
   let pkg = {}
 
   // To appease Vite's optimizeDeps feature which requires a root-level import
@@ -99,38 +94,33 @@ async function buildExports(styles) {
   // For those that want to read the version from package.json
   pkg[`./package.json`] = { default: './package.json' }
 
-  // Backwards compatibility with v1 imports (points to proxy that prints an error message):
-  pkg['./static'] = { default: './static/index.js' }
-  pkg['./static/index'] = { default: './static/index.js' }
-  pkg['./static/index.js'] = { default: './static/index.js' }
-
-  // Explicit exports for each style:
-  for (let style of styles) {
-    pkg[`./${style}`] = {
-      types: `./${style}/index.d.ts`,
-      import: `./${style}/esm/index.js`,
-      require: `./${style}/index.js`,
+  // Explicit exports for each package:
+  for (let package of packages) {
+    pkg[`./${package}`] = {
+      types: `./${package}/index.d.ts`,
+      import: `./${package}/esm/index.js`,
+      require: `./${package}/index.js`,
     }
-    pkg[`./${style}/*`] = {
-      types: `./${style}/*.d.ts`,
-      import: `./${style}/esm/*.js`,
-      require: `./${style}/*.js`,
+    pkg[`./${package}/*`] = {
+      types: `./${package}/*.d.ts`,
+      import: `./${package}/esm/*.js`,
+      require: `./${package}/*.js`,
     }
-    pkg[`./${style}/*.js`] = {
-      types: `./${style}/*.d.ts`,
-      import: `./${style}/esm/*.js`,
-      require: `./${style}/*.js`,
+    pkg[`./${package}/*.js`] = {
+      types: `./${package}/*.d.ts`,
+      import: `./${package}/esm/*.js`,
+      require: `./${package}/*.js`,
     }
 
     // This dir is basically an implementation detail, but it's needed for
     // backwards compatibility in case people were importing from it directly.
-    pkg[`./${style}/esm/*`] = {
-      types: `./${style}/*.d.ts`,
-      import: `./${style}/esm/*.js`,
+    pkg[`./${package}/esm/*`] = {
+      types: `./${package}/*.d.ts`,
+      import: `./${package}/esm/*.js`,
     }
-    pkg[`./${style}/esm/*.js`] = {
-      types: `./${style}/*.d.ts`,
-      import: `./${style}/esm/*.js`,
+    pkg[`./${package}/esm/*.js`] = {
+      types: `./${package}/*.d.ts`,
+      import: `./${package}/esm/*.js`,
     }
   }
 
@@ -146,25 +136,21 @@ async function main(package) {
   await Promise.all([rimraf(`./${package}/static/*`)])
 
   await Promise.all([
-    buildIcons(package, 'static', 'cjs'),
-    buildIcons(package, 'static', 'esm'),
-    ensureWriteJson(`./${package}/static/esm/package.json`, esmPackageJson),
-    ensureWriteJson(`./${package}/static/package.json`, cjsPackageJson),
+    buildIcons(package, 'cjs'),
+    buildIcons(package, 'esm'),
+    ensureWriteJson(`./${package}/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./${package}/package.json`, cjsPackageJson),
   ])
 
   let packageJson = JSON.parse(await fs.readFile(`./package.json`, 'utf8'))
 
-  packageJson.exports = await buildExports(['static'])
+  packageJson.exports = await buildExports([package])
 
   await ensureWriteJson(`./package.json`, packageJson)
 
   return console.log(`Finished building ${package} package.`)
 }
 
-let [package] = process.argv.slice(2)
-
-if (!package) {
-  throw new Error('Please specify a package')
-}
+let package = 'static'
 
 main(package)

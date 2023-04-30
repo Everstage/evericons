@@ -8,11 +8,10 @@
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
-    "lint": "node ./scripts/verify-names.js",
-    "prebuild": "rimraf ./static ./react/static ./optimized/static",
+    "prebuild": "rimraf ./static ./optimized/static",
     "build": "npm run build-static && npm run build-react",
     "build-react": "node ./scripts/build.js react",
-    "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static && cp -R ./optimized/static/ ./static",
+    "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static",
     "prepare": "npm run build"
   },
   "devDependencies": {
@@ -37,12 +36,6 @@
       "types": "./static/index.d.ts",
       "import": "./static/esm/index.js",
       "require": "./static/index.js"
-    },
-    "./static/index": {
-      "default": "./static/index.js"
-    },
-    "./static/index.js": {
-      "default": "./static/index.js"
     },
     "./static/*": {
       "types": "./static/*.d.ts",
