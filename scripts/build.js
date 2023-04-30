@@ -4,7 +4,6 @@ const { promisify } = require('util')
 const rimraf = promisify(require('rimraf'))
 const svgr = require('@svgr/core').default
 const babel = require('@babel/core')
-const { compile: compileVue } = require('@vue/compiler-dom')
 const { dirname } = require('path')
 
 let transform = {
@@ -21,29 +20,6 @@ let transform = {
     return code
       .replace('import * as React from "react"', 'const React = require("react")')
       .replace('export default', 'module.exports =')
-  },
-  vue: (svg, componentName, format) => {
-    let { code } = compileVue(svg, {
-      mode: 'module',
-    })
-
-    if (format === 'esm') {
-      return code.replace('export function', 'export default function')
-    }
-
-    return code
-      .replace(
-        /import\s+\{\s*([^}]+)\s*\}\s+from\s+(['"])(.*?)\2/,
-        (_match, imports, _quote, mod) => {
-          let newImports = imports
-            .split(',')
-            .map((i) => i.trim().replace(/\s+as\s+/, ': '))
-            .join(', ')
-
-          return `const { ${newImports} } = require("${mod}")`
-        }
-      )
-      .replace('export function render', 'module.exports = function render')
   },
 }
 
@@ -124,12 +100,9 @@ async function buildExports(styles) {
   pkg[`./package.json`] = { default: './package.json' }
 
   // Backwards compatibility with v1 imports (points to proxy that prints an error message):
-  pkg['./outline'] = { default: './outline/index.js' }
-  pkg['./outline/index'] = { default: './outline/index.js' }
-  pkg['./outline/index.js'] = { default: './outline/index.js' }
-  pkg['./solid'] = { default: './solid/index.js' }
-  pkg['./solid/index'] = { default: './solid/index.js' }
-  pkg['./solid/index.js'] = { default: './solid/index.js' }
+  pkg['./static'] = { default: './static/index.js' }
+  pkg['./static/index'] = { default: './static/index.js' }
+  pkg['./static/index.js'] = { default: './static/index.js' }
 
   // Explicit exports for each style:
   for (let style of styles) {
@@ -170,30 +143,18 @@ async function main(package) {
 
   console.log(`Building ${package} package...`)
 
-  await Promise.all([
-    rimraf(`./${package}/20/solid/*`),
-    rimraf(`./${package}/24/outline/*`),
-    rimraf(`./${package}/24/solid/*`),
-  ])
+  await Promise.all([rimraf(`./${package}/static/*`)])
 
   await Promise.all([
-    buildIcons(package, '20/solid', 'cjs'),
-    buildIcons(package, '20/solid', 'esm'),
-    buildIcons(package, '24/outline', 'cjs'),
-    buildIcons(package, '24/outline', 'esm'),
-    buildIcons(package, '24/solid', 'cjs'),
-    buildIcons(package, '24/solid', 'esm'),
-    ensureWriteJson(`./${package}/20/solid/esm/package.json`, esmPackageJson),
-    ensureWriteJson(`./${package}/20/solid/package.json`, cjsPackageJson),
-    ensureWriteJson(`./${package}/24/outline/esm/package.json`, esmPackageJson),
-    ensureWriteJson(`./${package}/24/outline/package.json`, cjsPackageJson),
-    ensureWriteJson(`./${package}/24/solid/esm/package.json`, esmPackageJson),
-    ensureWriteJson(`./${package}/24/solid/package.json`, cjsPackageJson),
+    buildIcons(package, 'static', 'cjs'),
+    buildIcons(package, 'static', 'esm'),
+    ensureWriteJson(`./${package}/static/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./${package}/static/package.json`, cjsPackageJson),
   ])
 
   let packageJson = JSON.parse(await fs.readFile(`./${package}/package.json`, 'utf8'))
 
-  packageJson.exports = await buildExports(['20/solid', '24/outline', '24/solid'])
+  packageJson.exports = await buildExports(['static'])
 
   await ensureWriteJson(`./${package}/package.json`, packageJson)
 

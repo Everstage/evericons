@@ -1,5 +1,5 @@
 {
-  "name": "@heroicons/react",
+  "name": "evericons",
   "license": "MIT",
   "version": "2.0.17",
   "description": "",
@@ -10,10 +10,7 @@
     "url": "https://github.com/tailwindlabs/heroicons.git"
   },
   "files": [
-    "20",
-    "24",
-    "outline",
-    "solid",
+    "static",
     "index.esm.js",
     "index.js"
   ],
@@ -26,92 +23,34 @@
     "./package.json": {
       "default": "./package.json"
     },
-    "./outline": {
-      "default": "./outline/index.js"
+    "./static": {
+      "types": "./static/index.d.ts",
+      "import": "./static/esm/index.js",
+      "require": "./static/index.js"
     },
-    "./outline/index": {
-      "default": "./outline/index.js"
+    "./static/index": {
+      "default": "./static/index.js"
     },
-    "./outline/index.js": {
-      "default": "./outline/index.js"
+    "./static/index.js": {
+      "default": "./static/index.js"
     },
-    "./solid": {
-      "default": "./solid/index.js"
+    "./static/*": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js",
+      "require": "./static/*.js"
     },
-    "./solid/index": {
-      "default": "./solid/index.js"
+    "./static/*.js": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js",
+      "require": "./static/*.js"
     },
-    "./solid/index.js": {
-      "default": "./solid/index.js"
+    "./static/esm/*": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js"
     },
-    "./20/solid": {
-      "types": "./20/solid/index.d.ts",
-      "import": "./20/solid/esm/index.js",
-      "require": "./20/solid/index.js"
-    },
-    "./20/solid/*": {
-      "types": "./20/solid/*.d.ts",
-      "import": "./20/solid/esm/*.js",
-      "require": "./20/solid/*.js"
-    },
-    "./20/solid/*.js": {
-      "types": "./20/solid/*.d.ts",
-      "import": "./20/solid/esm/*.js",
-      "require": "./20/solid/*.js"
-    },
-    "./20/solid/esm/*": {
-      "types": "./20/solid/*.d.ts",
-      "import": "./20/solid/esm/*.js"
-    },
-    "./20/solid/esm/*.js": {
-      "types": "./20/solid/*.d.ts",
-      "import": "./20/solid/esm/*.js"
-    },
-    "./24/outline": {
-      "types": "./24/outline/index.d.ts",
-      "import": "./24/outline/esm/index.js",
-      "require": "./24/outline/index.js"
-    },
-    "./24/outline/*": {
-      "types": "./24/outline/*.d.ts",
-      "import": "./24/outline/esm/*.js",
-      "require": "./24/outline/*.js"
-    },
-    "./24/outline/*.js": {
-      "types": "./24/outline/*.d.ts",
-      "import": "./24/outline/esm/*.js",
-      "require": "./24/outline/*.js"
-    },
-    "./24/outline/esm/*": {
-      "types": "./24/outline/*.d.ts",
-      "import": "./24/outline/esm/*.js"
-    },
-    "./24/outline/esm/*.js": {
-      "types": "./24/outline/*.d.ts",
-      "import": "./24/outline/esm/*.js"
-    },
-    "./24/solid": {
-      "types": "./24/solid/index.d.ts",
-      "import": "./24/solid/esm/index.js",
-      "require": "./24/solid/index.js"
-    },
-    "./24/solid/*": {
-      "types": "./24/solid/*.d.ts",
-      "import": "./24/solid/esm/*.js",
-      "require": "./24/solid/*.js"
-    },
-    "./24/solid/*.js": {
-      "types": "./24/solid/*.d.ts",
-      "import": "./24/solid/esm/*.js",
-      "require": "./24/solid/*.js"
-    },
-    "./24/solid/esm/*": {
-      "types": "./24/solid/*.d.ts",
-      "import": "./24/solid/esm/*.js"
-    },
-    "./24/solid/esm/*.js": {
-      "types": "./24/solid/*.d.ts",
-      "import": "./24/solid/esm/*.js"
+    "./static/esm/*.js": {
+      "types": "./static/*.d.ts",
+      "import": "./static/esm/*.js"
     }
   },
   "publishConfig": {
