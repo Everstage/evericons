@@ -4,6 +4,7 @@
   "license": "MIT",
   "files": [
     "static/",
+    "react/",
     "README.md"
   ],
   "scripts": {
@@ -12,9 +13,7 @@
     "prebuild": "rimraf ./static ./react/static ./optimized/static",
     "build": "npm run build-static && npm run build-react",
     "build-react": "node ./scripts/build.js react",
-    "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static && cp -R ./optimized/static/ ./static",
-    "release-channel": "node ./scripts/release-channel.js",
-    "release-notes": "node ./scripts/release-notes.js"
+    "build-static": "rimraf ./optimized/static && svgo --config=svgo.static.yaml -f ./src/static -o ./optimized/static --pretty --indent=2 && mkdir -p ./static && cp -R ./optimized/static/ ./static"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -24,5 +23,44 @@
     "prettier": "^2.8.7",
     "rimraf": "^3.0.2",
     "svgo": "^1.3.2"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./react/index.esm.js",
+      "require": "./react/index.js"
+    },
+    "./react/static": {
+      "types": "./react/static/index.d.ts",
+      "import": "./react/static/esm/index.js",
+      "require": "./react/static/index.js"
+    },
+    "./react/static/index": {
+      "default": "./react/static/index.js"
+    },
+    "./react/static/index.js": {
+      "default": "./react/static/index.js"
+    },
+    "./react/static/*": {
+      "types": "./react/static/*.d.ts",
+      "import": "./react/static/esm/*.js",
+      "require": "./react/static/*.js"
+    },
+    "./react/static/*.js": {
+      "types": "./react/static/*.d.ts",
+      "import": "./react/static/esm/*.js",
+      "require": "./react/static/*.js"
+    },
+    "./react/static/esm/*": {
+      "types": "./react/static/*.d.ts",
+      "import": "./react/static/esm/*.js"
+    },
+    "./react/static/esm/*.js": {
+      "types": "./react/static/*.d.ts",
+      "import": "./react/static/esm/*.js"
+    }
+  },
+  "peerDependencies": {
+    "react": ">= 16"
   }
 }
