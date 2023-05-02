@@ -4,15 +4,16 @@
   "license": "MIT",
   "type": "module",
   "files": [
-    "static/",
+    "outlined/",
     "README.md"
   ],
   "scripts": {
-    "prepublishOnly": "npm run build",
-    "prebuild": "rimraf ./static ./optimized/static",
-    "build": "npm run build-static && npm run build-react",
-    "build-react": "node ./scripts/build.js react",
-    "build-static": "rimraf ./optimized/static && svgo -f ./src/static -o ./optimized/static && mkdir -p ./static",
+    "prebuild": "rimraf ./outlined ./optimized/outlined ./optimized/duocolor ./optimized/duotone ./optimized/solid",
+    "build": "npm run build-outlined && npm run build-duocolor && npm run build-duotone && npm run build-solid && node ./scripts/build.js",
+    "build-outlined": "rimraf ./optimized/outlined && svgo --config ./svgo.outlined.config.js -f ./src/outlined -o ./optimized/outlined && mkdir -p ./outlined",
+    "build-duocolor": "rimraf ./optimized/duocolor && svgo --config ./svgo.outlined.config.js -f ./src/duocolor -o ./optimized/duocolor && mkdir -p ./duocolor",
+    "build-duotone": "rimraf ./optimized/duotone && svgo --config ./svgo.outlined.config.js -f ./src/duotone -o ./optimized/duotone && mkdir -p ./duotone",
+    "build-solid": "rimraf ./optimized/solid && svgo --config ./svgo.outlined.config.js -f ./src/solid -o ./optimized/solid && mkdir -p ./solid",
     "prepare": "npm run build"
   },
   "devDependencies": {
@@ -33,28 +34,97 @@
     "./package.json": {
       "default": "./package.json"
     },
-    "./static": {
-      "types": "./static/index.d.ts",
-      "import": "./static/esm/index.js",
-      "require": "./static/index.js"
+    "./outlined": {
+      "types": "./outlined/index.d.ts",
+      "import": "./outlined/esm/index.js",
+      "require": "./outlined/index.js"
     },
-    "./static/*": {
-      "types": "./static/*.d.ts",
-      "import": "./static/esm/*.js",
-      "require": "./static/*.js"
+    "./outlined/*": {
+      "types": "./outlined/*.d.ts",
+      "import": "./outlined/esm/*.js",
+      "require": "./outlined/*.js"
     },
-    "./static/*.js": {
-      "types": "./static/*.d.ts",
-      "import": "./static/esm/*.js",
-      "require": "./static/*.js"
+    "./outlined/*.js": {
+      "types": "./outlined/*.d.ts",
+      "import": "./outlined/esm/*.js",
+      "require": "./outlined/*.js"
     },
-    "./static/esm/*": {
-      "types": "./static/*.d.ts",
-      "import": "./static/esm/*.js"
+    "./outlined/esm/*": {
+      "types": "./outlined/*.d.ts",
+      "import": "./outlined/esm/*.js"
     },
-    "./static/esm/*.js": {
-      "types": "./static/*.d.ts",
-      "import": "./static/esm/*.js"
+    "./outlined/esm/*.js": {
+      "types": "./outlined/*.d.ts",
+      "import": "./outlined/esm/*.js"
+    },
+    "./duocolor": {
+      "types": "./duocolor/index.d.ts",
+      "import": "./duocolor/esm/index.js",
+      "require": "./duocolor/index.js"
+    },
+    "./duocolor/*": {
+      "types": "./duocolor/*.d.ts",
+      "import": "./duocolor/esm/*.js",
+      "require": "./duocolor/*.js"
+    },
+    "./duocolor/*.js": {
+      "types": "./duocolor/*.d.ts",
+      "import": "./duocolor/esm/*.js",
+      "require": "./duocolor/*.js"
+    },
+    "./duocolor/esm/*": {
+      "types": "./duocolor/*.d.ts",
+      "import": "./duocolor/esm/*.js"
+    },
+    "./duocolor/esm/*.js": {
+      "types": "./duocolor/*.d.ts",
+      "import": "./duocolor/esm/*.js"
+    },
+    "./duotone": {
+      "types": "./duotone/index.d.ts",
+      "import": "./duotone/esm/index.js",
+      "require": "./duotone/index.js"
+    },
+    "./duotone/*": {
+      "types": "./duotone/*.d.ts",
+      "import": "./duotone/esm/*.js",
+      "require": "./duotone/*.js"
+    },
+    "./duotone/*.js": {
+      "types": "./duotone/*.d.ts",
+      "import": "./duotone/esm/*.js",
+      "require": "./duotone/*.js"
+    },
+    "./duotone/esm/*": {
+      "types": "./duotone/*.d.ts",
+      "import": "./duotone/esm/*.js"
+    },
+    "./duotone/esm/*.js": {
+      "types": "./duotone/*.d.ts",
+      "import": "./duotone/esm/*.js"
+    },
+    "./solid": {
+      "types": "./solid/index.d.ts",
+      "import": "./solid/esm/index.js",
+      "require": "./solid/index.js"
+    },
+    "./solid/*": {
+      "types": "./solid/*.d.ts",
+      "import": "./solid/esm/*.js",
+      "require": "./solid/*.js"
+    },
+    "./solid/*.js": {
+      "types": "./solid/*.d.ts",
+      "import": "./solid/esm/*.js",
+      "require": "./solid/*.js"
+    },
+    "./solid/esm/*": {
+      "types": "./solid/*.d.ts",
+      "import": "./solid/esm/*.js"
+    },
+    "./solid/esm/*.js": {
+      "types": "./solid/*.d.ts",
+      "import": "./solid/esm/*.js"
     }
   },
   "peerDependencies": {

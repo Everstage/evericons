@@ -7,15 +7,6 @@ import * as babel from '@babel/core'
 import TransformReactJSX from '@babel/plugin-transform-react-jsx'
 
 let transformer = async (svg, componentName, format) => {
-  // let component = await svgr(
-  //   svg,
-  //   { ref: true, titleProp: true },
-  //   { componentName }
-  // )
-  // let { code } = await babel.transformAsync(component, {
-  //   plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
-  // })
-
   const component = await transform(
     svg,
     { plugins: ['@svgr/plugin-jsx'], ref: true, titleProp: true },
@@ -141,30 +132,45 @@ async function buildExports(styleTypes) {
   return pkg
 }
 
-async function main(styleType) {
+async function main() {
   const cjsPackageJson = { module: './esm/index.js', sideEffects: false }
   const esmPackageJson = { type: 'module', sideEffects: false }
 
-  console.log(`Building ${styleType} package...`)
-
-  await Promise.all([rimraf(`./${styleType}/static/*`)])
+  console.log(`Building package...`)
 
   await Promise.all([
-    buildIcons(styleType, 'cjs'),
-    buildIcons(styleType, 'esm'),
-    ensureWriteJson(`./${styleType}/esm/package.json`, esmPackageJson),
-    ensureWriteJson(`./${styleType}/package.json`, cjsPackageJson),
+    rimraf(`./outlined/*`),
+    rimraf(`./duocolor/*`),
+    rimraf(`./duotone/*`),
+    rimraf(`./solid/*`),
+  ])
+
+  await Promise.all([
+    buildIcons('outlined', 'cjs'),
+    buildIcons('outlined', 'esm'),
+    buildIcons('duocolor', 'cjs'),
+    buildIcons('duocolor', 'esm'),
+    buildIcons('duotone', 'cjs'),
+    buildIcons('duotone', 'esm'),
+    buildIcons('solid', 'cjs'),
+    buildIcons('solid', 'esm'),
+    ensureWriteJson(`./outlined/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./outlined/package.json`, cjsPackageJson),
+    ensureWriteJson(`./duocolor/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./duocolor/package.json`, cjsPackageJson),
+    ensureWriteJson(`./duotone/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./duotone/package.json`, cjsPackageJson),
+    ensureWriteJson(`./solid/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./solid/package.json`, cjsPackageJson),
   ])
 
   let packageJson = JSON.parse(await fs.readFile(`./package.json`, 'utf8'))
 
-  packageJson.exports = await buildExports([styleType])
+  packageJson.exports = await buildExports(['outlined', 'duocolor', 'duotone', 'solid'])
 
   await ensureWriteJson(`./package.json`, packageJson)
 
-  return console.log(`Finished building ${styleType} package.`)
+  return console.log(`Finished building package.`)
 }
 
-let styleType = 'static'
-
-main(styleType)
+main()
