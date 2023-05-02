@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "prebuild": "rimraf ./outlined ./duocolor ./duotone ./solid ./lotties ./optimized/outlined ./optimized/duocolor ./optimized/duotone ./optimized/solid",
-    "build": "npm run build-outlined && npm run build-duocolor && npm run build-duotone && npm run build-solid && node ./scripts/build.js",
+    "build": "npm run build-outlined && npm run build-duocolor && npm run build-duotone && npm run build-solid && npm run build-lotties && node ./scripts/build.js",
     "build-outlined": "rimraf ./optimized/outlined && svgo --config ./svgo.outlined.config.js -f ./src/outlined -o ./optimized/outlined && mkdir -p ./outlined",
     "build-duocolor": "rimraf ./optimized/duocolor && svgo --config ./svgo.outlined.config.js -f ./src/duocolor -o ./optimized/duocolor && mkdir -p ./duocolor",
     "build-duotone": "rimraf ./optimized/duotone && svgo --config ./svgo.outlined.config.js -f ./src/duotone -o ./optimized/duotone && mkdir -p ./duotone",
