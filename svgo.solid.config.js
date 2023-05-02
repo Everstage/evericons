@@ -19,13 +19,7 @@ export default {
     {
       name: 'addAttributesToSVGElement',
       params: {
-        attributes: [
-          { fill: 'currentColor' },
-          { 'aria-hidden': 'true' },
-          // some of the solid icons e.g. close buttons are basically strokes, so we need to add stroke attributes
-          { 'stroke-width': '1.5' },
-          { stroke: 'currentColor' },
-        ],
+        attributes: [{ fill: 'currentColor' }, { 'aria-hidden': 'true' }],
       },
     },
   ],
