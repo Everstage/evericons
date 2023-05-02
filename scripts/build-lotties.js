@@ -14,9 +14,7 @@ async function transformer(lottieWrapper, format) {
     return code
   }
 
-  return code
-    .replace('import * as React from "react"', 'const React = require("react")')
-    .replace('export default', 'module.exports =')
+  return code.replace('export default', 'module.exports =')
 }
 
 // get all lottie json files
@@ -52,12 +50,10 @@ export async function buildLotties(format) {
 
   await Promise.all(
     icons.flatMap(async ({ componentName, lottieWrapper }) => {
-      let content = await transformer(lottieWrapper, componentName, format)
+      let content = await transformer(lottieWrapper, format)
       return [ensureWrite(`${outDir}/${componentName}.js`, content)]
     })
   )
 
   await ensureWrite(`${outDir}/index.js`, exportAll(icons, format))
-
-  await ensureWrite(`${outDir}/index.d.ts`, exportAll(icons, 'esm', false))
 }
