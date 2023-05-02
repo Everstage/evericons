@@ -4,6 +4,7 @@ import TransformReactJSX from '@babel/plugin-transform-react-jsx'
 import { transformAsync } from '@babel/core'
 import { ensureWrite, exportAll } from './utils.js'
 
+// transform the lottie wrapper to a react component
 async function transformer(lottieWrapper, format) {
   let { code } = await transformAsync(lottieWrapper, {
     plugins: [[TransformReactJSX, { useBuiltIns: true }]],
@@ -18,7 +19,8 @@ async function transformer(lottieWrapper, format) {
     .replace('export default', 'module.exports =')
 }
 
-async function getIcons() {
+// get all lottie json files
+async function getLottieJsons() {
   let files = await fs.readdir(`./src/lotties`)
   return Promise.all(
     files.map(async (file) => {
@@ -39,13 +41,14 @@ async function getIcons() {
   )
 }
 
+// build lottie components
 export async function buildLotties(format) {
   let outDir = `./lotties`
   if (format === 'esm') {
     outDir += '/esm'
   }
 
-  let icons = await getIcons()
+  let icons = await getLottieJsons()
 
   await Promise.all(
     icons.flatMap(async ({ componentName, lottieWrapper }) => {
