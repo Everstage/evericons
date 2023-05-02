@@ -1,0 +1,61 @@
+import { useLottie } from "lottie-react";
+import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
+import LottieJson from "./{LottieJson}";
+
+export function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent, ...properties }) {
+  const [isComplete, setIsComplete] = useState(false)
+  const lottieParent = useRef()
+  const triggerReference = animationTriggerRef?.current || lottieParent.current
+  const options = {
+    animationData: LottieJson,
+    loop: false,
+    autoplay: false,
+    onComplete() {
+      setIsComplete(true)
+    },
+  }
+
+  const { View, play, setDirection } = useLottie(options)
+
+  // have to sync with dom events such as click and hover, so using an effect
+  useEffect(() => {
+    if (triggerReference) {
+      if (animationTriggerEvent === 'click') {
+        triggerReference.addEventListener('click', () => {
+          // if animation is complete then play (again)
+          setIsComplete(false)
+          setDirection(1)
+          play()
+        })
+      } else if (animationTriggerEvent === 'hover') {
+        triggerReference.addEventListener('mouseenter', () => {
+          setDirection(1)
+          play()
+        })
+        triggerReference.addEventListener('mouseleave', () => {
+          if (isComplete) {
+            // if animation is complete then reset it
+            setIsComplete(false)
+          } else {
+            // if animation is not complete then reverse it
+            setDirection(-1)
+            play()
+          }
+        })
+      }
+    }
+  }, [animationTriggerEvent, triggerReference, setDirection, play, isComplete])
+
+  return (
+    <div ref={lottieParent} {...properties}>
+      {View}
+    </div>
+  )
+}
+
+Animation.propTypes = {
+  icon: PropTypes.object.isRequired,
+  animationTriggerEvent: PropTypes.oneOf(['hover', 'click']),
+  animationTriggerRef: PropTypes.object,
+}

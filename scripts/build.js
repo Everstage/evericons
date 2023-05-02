@@ -2,18 +2,21 @@ import fs from 'fs/promises'
 import camelcase from 'camelcase'
 import { rimraf } from 'rimraf'
 import { transform } from '@svgr/core'
-import { dirname } from 'path'
-import * as babel from '@babel/core'
+import { transformAsync } from '@babel/core'
 import TransformReactJSX from '@babel/plugin-transform-react-jsx'
+import { ensureWrite, ensureWriteJson, exportAll } from './utils.js'
+import { buildLotties } from './build-lotties.js'
 
-let transformer = async (svg, componentName, format) => {
+async function transformer(svg, componentName, format) {
+  // convert svg to react component
   const component = await transform(
     svg,
     { plugins: ['@svgr/plugin-jsx'], ref: true, titleProp: true },
     { componentName }
   )
 
-  let { code } = await babel.transformAsync(component, {
+  // convert react component to js
+  let { code } = await transformAsync(component, {
     plugins: [[TransformReactJSX, { useBuiltIns: true }]],
   })
 
@@ -26,6 +29,7 @@ let transformer = async (svg, componentName, format) => {
     .replace('export default', 'module.exports =')
 }
 
+// get all icons from the optimized folder
 async function getIcons(styleType) {
   let files = await fs.readdir(`./optimized/${styleType}`)
   return Promise.all(
@@ -36,27 +40,6 @@ async function getIcons(styleType) {
       })}Icon`,
     }))
   )
-}
-
-function exportAll(icons, format, includeExtension = true) {
-  return icons
-    .map(({ componentName }) => {
-      let extension = includeExtension ? '.js' : ''
-      if (format === 'esm') {
-        return `export { default as ${componentName} } from './${componentName}${extension}'`
-      }
-      return `module.exports.${componentName} = require("./${componentName}${extension}")`
-    })
-    .join('\n')
-}
-
-async function ensureWrite(file, text) {
-  await fs.mkdir(dirname(file), { recursive: true })
-  await fs.writeFile(file, text, 'utf8')
-}
-
-async function ensureWriteJson(file, json) {
-  await ensureWrite(file, JSON.stringify(json, null, 2) + '\n')
 }
 
 async function buildIcons(styleType, format) {
@@ -154,6 +137,8 @@ async function main() {
     buildIcons('duotone', 'esm'),
     buildIcons('solid', 'cjs'),
     buildIcons('solid', 'esm'),
+    buildLotties('cjs'),
+    buildLotties('esm'),
     ensureWriteJson(`./outlined/esm/package.json`, esmPackageJson),
     ensureWriteJson(`./outlined/package.json`, cjsPackageJson),
     ensureWriteJson(`./duocolor/esm/package.json`, esmPackageJson),
@@ -162,6 +147,8 @@ async function main() {
     ensureWriteJson(`./duotone/package.json`, cjsPackageJson),
     ensureWriteJson(`./solid/esm/package.json`, esmPackageJson),
     ensureWriteJson(`./solid/package.json`, cjsPackageJson),
+    ensureWriteJson(`./lotties/esm/package.json`, esmPackageJson),
+    ensureWriteJson(`./lotties/package.json`, cjsPackageJson),
   ])
 
   let packageJson = JSON.parse(await fs.readFile(`./package.json`, 'utf8'))

@@ -8,15 +8,17 @@
     "duocolor/",
     "duotone/",
     "solid/",
+    "lotties/",
     "README.md"
   ],
   "scripts": {
-    "prebuild": "rimraf ./outlined ./optimized/outlined ./optimized/duocolor ./optimized/duotone ./optimized/solid",
+    "prebuild": "rimraf ./outlined ./duocolor ./duotone ./solid ./lotties ./optimized/outlined ./optimized/duocolor ./optimized/duotone ./optimized/solid",
     "build": "npm run build-outlined && npm run build-duocolor && npm run build-duotone && npm run build-solid && node ./scripts/build.js",
     "build-outlined": "rimraf ./optimized/outlined && svgo --config ./svgo.outlined.config.js -f ./src/outlined -o ./optimized/outlined && mkdir -p ./outlined",
     "build-duocolor": "rimraf ./optimized/duocolor && svgo --config ./svgo.outlined.config.js -f ./src/duocolor -o ./optimized/duocolor && mkdir -p ./duocolor",
     "build-duotone": "rimraf ./optimized/duotone && svgo --config ./svgo.outlined.config.js -f ./src/duotone -o ./optimized/duotone && mkdir -p ./duotone",
     "build-solid": "rimraf ./optimized/solid && svgo --config ./svgo.solid.config.js -f ./src/solid -o ./optimized/solid && mkdir -p ./solid",
+    "build-lotties": "mkdir -p ./lotties && cp ./src/lotties/*.json ./lotties",
     "prepare": "npm run build"
   },
   "devDependencies": {
