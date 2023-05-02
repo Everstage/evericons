@@ -126,6 +126,7 @@ async function main() {
     rimraf(`./duocolor/*`),
     rimraf(`./duotone/*`),
     rimraf(`./solid/*`),
+    rimraf(`./lotties/*`),
   ])
 
   await Promise.all([
@@ -153,7 +154,7 @@ async function main() {
 
   let packageJson = JSON.parse(await fs.readFile(`./package.json`, 'utf8'))
 
-  packageJson.exports = await buildExports(['outlined', 'duocolor', 'duotone', 'solid'])
+  packageJson.exports = await buildExports(['outlined', 'duocolor', 'duotone', 'solid', 'lotties'])
 
   await ensureWriteJson(`./package.json`, packageJson)
 
