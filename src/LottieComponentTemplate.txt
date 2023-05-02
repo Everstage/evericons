@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import LottieJson from "{LottieJson}";
 
-export function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent, ...properties }) {
+export default function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent, ...properties }) {
   const [isComplete, setIsComplete] = useState(false)
   const lottieParent = useRef()
   const triggerReference = animationTriggerRef?.current || lottieParent.current
