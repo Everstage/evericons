@@ -31,7 +31,7 @@ async function getLottieJsons(format) {
       const lottieWrapper = lottieWrapperTemplate
         .replace('{ComponentName}', componentName)
         // read the file and replace
-        .replace('{LottieJson}', format === 'esm' ? `./${file}` : file)
+        .replace('{LottieJson}', format === 'esm' ? `../${file}` : `./${file}`)
 
       return {
         lottieWrapper: lottieWrapper,

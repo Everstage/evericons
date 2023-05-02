@@ -1,7 +1,7 @@
 import { useLottie } from "lottie-react";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
-import LottieJson from "./{LottieJson}";
+import LottieJson from "{LottieJson}";
 
 export function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent, ...properties }) {
   const [isComplete, setIsComplete] = useState(false)
