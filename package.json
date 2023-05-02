@@ -130,6 +130,29 @@
     "./solid/esm/*.js": {
       "types": "./solid/*.d.ts",
       "import": "./solid/esm/*.js"
+    },
+    "./lotties": {
+      "types": "./lotties/index.d.ts",
+      "import": "./lotties/esm/index.js",
+      "require": "./lotties/index.js"
+    },
+    "./lotties/*": {
+      "types": "./lotties/*.d.ts",
+      "import": "./lotties/esm/*.js",
+      "require": "./lotties/*.js"
+    },
+    "./lotties/*.js": {
+      "types": "./lotties/*.d.ts",
+      "import": "./lotties/esm/*.js",
+      "require": "./lotties/*.js"
+    },
+    "./lotties/esm/*": {
+      "types": "./lotties/*.d.ts",
+      "import": "./lotties/esm/*.js"
+    },
+    "./lotties/esm/*.js": {
+      "types": "./lotties/*.d.ts",
+      "import": "./lotties/esm/*.js"
     }
   },
   "peerDependencies": {
