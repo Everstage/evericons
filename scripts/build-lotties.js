@@ -20,7 +20,7 @@ async function transformer(lottieWrapper, format) {
 }
 
 // get all lottie json files
-async function getLottieJsons() {
+async function getLottieJsons(format) {
   let files = await fs.readdir(`./src/lotties`)
   return Promise.all(
     files.map(async (file) => {
@@ -31,7 +31,7 @@ async function getLottieJsons() {
       const lottieWrapper = lottieWrapperTemplate
         .replace('{ComponentName}', componentName)
         // read the file and replace
-        .replace('{LottieJson}', `${file}`)
+        .replace('{LottieJson}', format === 'esm' ? `./${file}` : file)
 
       return {
         lottieWrapper: lottieWrapper,
@@ -48,7 +48,7 @@ export async function buildLotties(format) {
     outDir += '/esm'
   }
 
-  let icons = await getLottieJsons()
+  let icons = await getLottieJsons(format)
 
   await Promise.all(
     icons.flatMap(async ({ componentName, lottieWrapper }) => {
