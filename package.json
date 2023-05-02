@@ -5,6 +5,9 @@
   "type": "module",
   "files": [
     "outlined/",
+    "duocolor/",
+    "duotone/",
+    "solid/",
     "README.md"
   ],
   "scripts": {
