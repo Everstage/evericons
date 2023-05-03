@@ -1,9 +1,9 @@
-#Evericons
+# Evericons
 A set of icons taken from Untitled Icons and converted to React components.
 
 ## Basic Usage
 
-Both icon styles are preconfigured to be stylable by setting the `color` CSS property, either manually or using utility classes like `text-gray-500` in a framework like [Tailwind CSS](https://tailwindcss.com).
+All icon styles are preconfigured to be stylable by setting the `color` CSS property, except `lottie` animation icons, either manually or using utility classes like `text-gray-500` in a framework like [Tailwind CSS](https://tailwindcss.com).
 
 First, install `evericons`:
 
@@ -30,4 +30,4 @@ There are 5 types of icon styles available:
 - `solid`, do `import { DownloadIcon } from 'evericons/solid'`
 - `duotone` do `import { DownloadIcon } from 'evericons/duotone'`
 - `duocolor` do `import { DownloadIcon } from 'evericons/duocolor'`
-- `lottie` do `import { DownloadIcon } from 'evericons/lottie'`
+- `lottie` do `import { DownloadLottie } from 'evericons/lottie'`
