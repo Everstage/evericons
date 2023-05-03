@@ -15,16 +15,12 @@ export default {
       },
     },
     { name: 'removeDimensions' },
-    { name: 'removeAttrs', params: { attrs: ['fill', 'stroke', 'path:stroke-width'] } },
+    { name: 'removeAttrs', params: { attrs: ['path:stroke-width'] } },
+    { name: 'convertColors', params: { currentColor: true } },
     {
       name: 'addAttributesToSVGElement',
       params: {
-        attributes: [
-          { fill: 'currentColor' },
-          { stroke: 'currentColor' },
-          { 'stroke-width': '1.5' },
-          { 'aria-hidden': 'true' },
-        ],
+        attributes: [{ 'stroke-width': '1.5' }, { 'aria-hidden': 'true' }],
       },
     },
   ],
