@@ -3,9 +3,11 @@ A set of icons taken from Untitled Icons and converted to React components.
 
 ## Basic Usage
 
-All icon styles are preconfigured to be stylable by setting the `color` CSS property, except `lottie` animation icons, either manually or using utility classes like `text-gray-500` in a framework like [Tailwind CSS](https://tailwindcss.com).
+All icon styles are preconfigured to be stylable by setting the `color` CSS property, either manually or using utility classes like `text-primary` (except `lottie` animation icons, they cannot be styled like that).
 
-First, install `evericons`:
+*Todo: check if lottie icons can be styled using `color` property.*
+
+First, install `evericons` (In case of everstage-spm, it is installed already):
 
 ```sh
 npm install https://github.com/Everstage/evericons.git
@@ -19,26 +21,30 @@ import { DownloadIcon } from 'evericons/outlined'
 function MyComponent() {
   return (
     <div>
-      <DownloadIcon className="h-6 w-6 text-blue-500" />
+      <DownloadIcon className="h-6 w-6 text-primary" />
       <p>...</p>
     </div>
   )
 }
 ```
 There are 5 types of icon styles available:
-- `outlined`, do 
+- For `outlined`, do 
   ```js
   import { DownloadIcon } from 'evericons/outlined'
   ```
-- `duotone`, do 
+- For `duotone`, do 
   ```js
   import { DownloadIcon } from 'evericons/duotone'
   ```
-- `duocolor`, do 
+- For `duocolor`, do 
   ```js
   import { DownloadIcon } from 'evericons/duocolor'
   ```
-- `lottie`, do 
+- For `solid`, do 
+  ```js
+  import { DownloadIcon } from 'evericons/solid'
+  ```
+- For `lottie`, do 
   ```js
   import { DownloadIcon } from 'evericons/lottie'
   ```
