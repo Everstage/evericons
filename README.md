@@ -26,8 +26,31 @@ function MyComponent() {
 }
 ```
 There are 5 types of icon styles available:
-- `outlined`, do `import { DownloadIcon } from 'evericons/outlined'`
-- `solid`, do `import { DownloadIcon } from 'evericons/solid'`
-- `duotone` do `import { DownloadIcon } from 'evericons/duotone'`
-- `duocolor` do `import { DownloadIcon } from 'evericons/duocolor'`
-- `lottie` do `import { DownloadLottie } from 'evericons/lottie'`
+- `outlined`, do 
+  ```js
+  import { DownloadIcon } from 'evericons/outlined'
+  ```
+- `duotone`, do 
+  ```js
+  import { DownloadIcon } from 'evericons/duotone'
+  ```
+- `duocolor`, do 
+  ```js
+  import { DownloadIcon } from 'evericons/duocolor'
+  ```
+- `lottie`, do 
+  ```js
+  import { DownloadIcon } from 'evericons/lottie'
+  ```
+
+##How to add a new icon:
+- Add the icon to the appropriate folder inside `src`.
+- E.g. if the icon is an outlined icon, add it to `src/outlined`.
+- Name the icon in kebab-case. E.g. `filter-funnel.svg`.
+- Once added commit and push the changes.
+- In the destination project run, `npm update evericons`.
+- The build process will convert the name to *PascalCase* and also add the suffix, *Icon* to the name. E.g. `FilterFunnelIcon`.
+- Now in the destination project you can use the icon as follows:
+  ```js
+  import { FilterFunnelIcon } from 'evericons/outlined'
+  ```
