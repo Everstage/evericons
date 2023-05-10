@@ -46,7 +46,7 @@ There are 5 types of icon styles available:
   ```
 - For `lottie`, do 
   ```js
-  import { DownloadIcon } from 'evericons/lottie'
+  import { DownloadLottie } from 'evericons/lottie'
   ```
 
 ##How to add a new icon:
