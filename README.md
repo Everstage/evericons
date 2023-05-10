@@ -55,7 +55,7 @@ There are 5 types of icon styles available:
 - Name the icon in kebab-case. E.g. `filter-funnel.svg`.
 - Once added commit and push the changes.
 - In the destination project run, `npm update evericons`.
-- The build process will convert the name to *PascalCase* and also add the suffix, *Icon* to the name. E.g. `FilterFunnelIcon`.
+- The build process will convert the name to *PascalCase* and also add the suffix, *Icon* or *Lottie* to the name. E.g. `FilterFunnelIcon` or `FilterFunnelLottie`.
 - Now in the destination project you can use the icon as follows:
   ```js
   import { FilterFunnelIcon } from 'evericons/outlined'
