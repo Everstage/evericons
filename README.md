@@ -49,7 +49,7 @@ There are 5 types of icon styles available:
   import { DownloadLottie } from 'evericons/lottie'
   ```
 
-##How to add a new icon:
+## How to add a new icon:
 - Add the icon to the appropriate folder inside `src`.
 - E.g. if the icon is an outlined icon, add it to `src/outlined`.
 - Name the icon in kebab-case. E.g. `filter-funnel.svg`.
