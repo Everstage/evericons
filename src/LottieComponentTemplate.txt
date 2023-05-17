@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import LottieJson from "{LottieJson}";
 
-export default function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent="hover", ...properties }) {
+export default function {ComponentName}({ icon, animationTriggerRef, animationTriggerEvent="hover", loop = false, autoplay = false, ...properties }) {
   const [isComplete, setIsComplete] = useState(false)
   const lottieParent = useRef()
   const triggerReference = animationTriggerRef?.current || lottieParent.current
   const options = {
     animationData: LottieJson,
-    loop: false,
-    autoplay: false,
+    loop: loop,
+    autoplay: autoplay,
     onComplete() {
       setIsComplete(true)
     },
