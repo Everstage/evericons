@@ -16,6 +16,8 @@ export default function {ComponentName}({ icon, animationTriggerRef, animationTr
     },
   }
 
+  animationTriggerEvent = autoplay ? null : animationTriggerEvent; // if loop or autoplay is true then no need to trigger animation
+
   const { View, play, setDirection } = useLottie(options)
 
   // have to sync with dom events such as click and hover, so using an effect
